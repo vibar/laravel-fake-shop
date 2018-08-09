@@ -53,8 +53,8 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('cart.index') }}">
                                     {{ __('My Cart') }}
-                                    @if (auth()->user()->products)
-                                        &nbsp;<span class="badge badge-dark">{{ count(auth()->user()->products) }}</span>
+                                    @if ($countProducts = auth()->user()->products()->count())
+                                        &nbsp;<span class="badge badge-dark">{{ $countProducts }}</span>
                                     @endif
                                 </a>
                             </li>

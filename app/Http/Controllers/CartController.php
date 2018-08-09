@@ -17,7 +17,13 @@ class CartController extends Controller
     {
         $products = $request->user()->products;
 
-        return view('cart.index', compact('products'));
+        $total = 0;
+
+        foreach ($products as $product) {
+            $total += $product->price;
+        }
+
+        return view('cart.index', compact('products', 'total'));
     }
 
     /**
@@ -47,9 +53,15 @@ class CartController extends Controller
      * @param Product $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Product $product)
+    public function destroy(Request $request, Product $product = null)
     {
-        $request->user()->products()->detach($product->id);
+        $user = $request->user();
+
+        if ($product) { // remove specific product
+            $user->products()->detach($product->id);
+        } else { // remove all
+            $user->products()->detach();
+        }
 
         return redirect()->route('cart.index');
     }
