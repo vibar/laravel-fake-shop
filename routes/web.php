@@ -22,4 +22,16 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('/products', 'ProductController')
-    ->only('index', 'show');
+    ->only('index');
+
+Route::group([
+    'middleware' => 'auth'
+], function() {
+
+    Route::get('/cart', 'CartController@index')->name('cart.index');
+    Route::post('/cart/{product}', 'CartController@store')->name('cart.store');
+    Route::delete('/cart/{product}', 'CartController@destroy')->name('cart.destroy');
+
+});
+
+

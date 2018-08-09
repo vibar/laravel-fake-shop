@@ -28,6 +28,17 @@ class User extends Authenticatable
     ];
 
     /**
+     * Products
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
+     */
+    public function products()
+    {
+        return $this->belongsToMany(Product::class)
+            ->withPivot('amount');
+    }
+
+    /**
      * Orders
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
