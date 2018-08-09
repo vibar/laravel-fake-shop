@@ -16,7 +16,8 @@ use Faker\Generator as Faker;
 $factory->define(App\Product::class, function (Faker $faker) {
     return [
         'name' => $faker->sentence(3),
-        'picture' => $faker->imageUrl(300, 300),
+        // 'picture' => $faker->imageUrl(200, 200),
+        'picture' => 'http://via.placeholder.com/200',
         'price' => $faker->randomFloat(2, 10, 100),
         'description' => $faker->sentence(10),
     ];
