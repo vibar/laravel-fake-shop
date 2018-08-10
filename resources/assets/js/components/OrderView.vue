@@ -4,13 +4,13 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        New order #{{ order.id }} created successfully!
+                        Order #{{ order.id }}
                     </div>
                     <div class="card-body">
                         <p>Created at: {{ order.created_at }}</p>
-                        <p>Total: {{ order.currency ? order.currency.symbol : '' }} {{ order.total }}</p>
-                        <p>An email was sent to: {{ order.user ? order.user.email : '' }}.</p>
-                        <router-link tag="a" :to="{name:'order.index'}">See my orders</router-link>
+                        <p>Currency: {{ order.currency ? order.currency.symbol : '' }}</p>
+                        <p><b>Total: {{ order.total }}</b></p>
+                        <router-link tag="a" :to="{name:'order.index'}">See all orders</router-link>
                     </div>
                 </div>
             </div>

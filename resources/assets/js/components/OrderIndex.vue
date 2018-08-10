@@ -6,9 +6,9 @@
                     <div class="card-header">My Orders</div>
                     <div v-if="orders.length" class="card-body">
                         <p v-for="order in orders">
-                            <b>#{{ order.id }}</b>
-                            - {{ order.currency.symbol }} {{ order.total }}
-                            - {{ order.created_at }}
+                            <router-link tag="a" :to="{name:'order.view', params: {id: order.id}}">
+                                <b>#{{ order.id }}</b> - {{ order.created_at }} - {{ order.currency.symbol }} {{ order.total }}
+                            </router-link>
                         </p>
                     </div>
                     <div v-else class="card-body">
