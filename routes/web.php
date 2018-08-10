@@ -32,6 +32,7 @@ Route::group([
     Route::post('/cart/{product}', 'CartController@store')->name('cart.store');
     Route::delete('/cart/{product}', 'CartController@destroy')->name('cart.destroy');
 
+    Route::get('/currency/{currency}', 'CurrencyController@update')->name('currency.update');
     Route::post('/checkout', 'OrderController@store')->name('order.store');
     Route::get('/orders', 'OrderController@index')->name('order.index');
 

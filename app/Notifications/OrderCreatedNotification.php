@@ -46,9 +46,9 @@ class OrderCreatedNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject("New order #{$this->order->id} generated")
-            ->line("Created at: {$this->order->created_at}")
-            ->line("Total: {$this->order->currency} ".number_format($this->order->total, 2))
+            ->subject("New order #{$this->order->id}")
+            ->line("New order #{$this->order->id} generated at {$this->order->created_at}.")
+            ->line("Total: {$this->order->currency->symbol} ".$this->order->total)
              ->action('See my orders', route('order.index', [], true));
     }
 

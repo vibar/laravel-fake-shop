@@ -15,7 +15,7 @@
 
                     <p>Created at: {{ $order->created_at }}</p>
 
-                    <p>Total: € {{ $order->total }}</p>
+                    <p>Total: {{ $order->currency->symbol }} {{ $order->total }}</p>
 
                     <p>An email was sent to: {{ $order->user->email }}.</p>
 

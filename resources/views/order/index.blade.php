@@ -9,13 +9,21 @@
 
                 <div class="card-body">
 
-                    @foreach ($orders as $order)
+                    @if (count($orders))
 
-                        <p>
-                            #{{ $order->id }} - {{ $order->created_at }} - {{ $order->currency }} {{ $order->total }}
-                        </p>
+                        @foreach ($orders as $order)
 
-                    @endforeach
+                            <p>
+                                <b>#{{ $order->id }}</b> - {{ $order->currency->symbol }} {{ $order->total }} - {{ $order->created_at }}
+                            </p>
+
+                        @endforeach
+
+                    @else
+
+                        No order created.
+
+                    @endif
 
                 </div>
             </div>

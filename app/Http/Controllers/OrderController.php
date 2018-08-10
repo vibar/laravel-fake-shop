@@ -32,28 +32,26 @@ class OrderController extends Controller
         $user = $request->user();
 
         if (! $user->products()->count()) {
-            return redirect()->route('cart.index');
-        }
-
-        $total = 0;
-
-        foreach ($user->products as $product) {
-            $total += $product->price;
+            return redirect()->route('home');
         }
 
         $order = null;
 
-        DB::transaction(function() use ($user, $total, &$order) {
+        DB::transaction(function() use ($user, &$order) {
+
+            // Create order
+
+            $order = new Order();
+            $order->user_id = $user->id;
+            $order->currency_id = $user->currency->id;
+            $order->total = $user->getCartTotal();
+            $order->save();
 
             // Empty cart
 
             $user->products()->detach();
 
-            // Create order
-
-            $order = $user->orders()->create([
-                'total' => $total
-            ]);
+            // Send email
 
             $user->notify(new OrderCreatedNotification($order));
 

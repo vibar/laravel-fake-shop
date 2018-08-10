@@ -7,11 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     /**
-     * @var array
-     */
-    protected $fillable = ['total'];
-
-    /**
      * User
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -19,5 +14,24 @@ class Order extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class);
+    }
+
+    /**
+     * @param $value
+     * @return string
+     */
+    public function getTotalAttribute($value)
+    {
+        return number_format($value, 2);
     }
 }

@@ -21,7 +21,7 @@
 
                                 <p><b>{{ $product->name }}</b></p>
 
-                                <p>€ {{ number_format($product->price, 2) }}</p>
+                                <p>{{ auth()->user()->currency->symbol . ' ' . $product->price }}</p>
 
                                 <p>{{ $product->description }}</p>
 

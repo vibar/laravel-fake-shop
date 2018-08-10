@@ -28,6 +28,16 @@ class User extends Authenticatable
     ];
 
     /**
+     * Currency
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\belongsTo
+     */
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class);
+    }
+
+    /**
      * Products
      *
      * @return \Illuminate\Database\Eloquent\Relations\belongsToMany
@@ -46,5 +56,19 @@ class User extends Authenticatable
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    /**
+     * @return float
+     */
+    public function getCartTotal()
+    {
+        $total = 0;
+
+        foreach ($this->products as $product) {
+            $total += $product->price;
+        }
+
+        return (float) money_format($total, 2);
     }
 }

@@ -22,7 +22,7 @@
 
                     @if (count($products))
 
-                        <h4 style="float: left;margin-top: 4px;">Total: € {{ $total }}</h4>
+                        <h4 style="float: left;margin-top: 4px;">Total: {{ auth()->user()->currency->symbol }} {{ $total }}</h4>
 
                         <form action="{{ route('order.store') }}" method="post"
                               style="float: right;margin-left: 15px;">
@@ -63,7 +63,7 @@
 
                                 <p><b>{{ $product->name }}</b></p>
 
-                                <p>€ {{ number_format($product->price, 2) }}</p>
+                                <p>{{ auth()->user()->currency->symbol . ' ' . $product->price }}</p>
 
                                 <p>{{ $product->description }}</p>
 

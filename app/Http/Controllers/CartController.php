@@ -15,13 +15,11 @@ class CartController extends Controller
      */
     public function index(Request $request)
     {
-        $products = $request->user()->products;
+        $user = $request->user();
 
-        $total = 0;
+        $products = $user->products;
 
-        foreach ($products as $product) {
-            $total += $product->price;
-        }
+        $total = $user->getCartTotal();
 
         return view('cart.index', compact('products', 'total'));
     }
