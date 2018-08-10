@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Currency;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Currency as CurrencyResource;
 use App\Services\CurrencyService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -28,7 +29,7 @@ class CurrencyController extends Controller
      *
      * @param  \Illuminate\Http\Request $request
      * @param  Currency $currency
-     * @return \Illuminate\Http\Response
+     * @return CurrencyResource
      */
     public function update(Request $request, Currency $currency)
     {
@@ -43,7 +44,7 @@ class CurrencyController extends Controller
 
         });
 
-        return response()->json(['data' => $currency]);
+        return new CurrencyResource($currency);
     }
 
 }

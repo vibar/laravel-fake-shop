@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Order as OrderResource;
 use App\Notifications\OrderCreatedNotification;
 use App\Order;
 use Illuminate\Http\Request;
@@ -13,15 +14,13 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index()
     {
         $orders = Order::with('currency')->latest()->get();
 
-        // TODO: Http resources
-
-        return response()->json(['data' => $orders]);
+        return OrderResource::collection($orders);
     }
 
     /**
@@ -29,7 +28,7 @@ class OrderController extends Controller
      *
      * @param Request $request
      * @param Order $order
-     * @return \Illuminate\Http\Response
+     * @return OrderResource
      */
     public function show(Request $request, Order $order)
     {
@@ -37,18 +36,16 @@ class OrderController extends Controller
             return response()->json(['message' => 'Not found.'], 404);
         }
 
-        $order->load(['currency', 'user']);
+        $order->load(['currency']);
 
-        // TODO: Http resources
-
-        return response()->json(['data' => $order]);
+        return new OrderResource($order);
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return OrderResource
      */
     public function store(Request $request)
     {
@@ -80,8 +77,7 @@ class OrderController extends Controller
 
         });
 
-        return response()->json(['data' => $order]);
-
+        return new OrderResource($order);
     }
 
 }

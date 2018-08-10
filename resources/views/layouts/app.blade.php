@@ -1,7 +1,7 @@
 @php
     $user = auth()->user();
-    $currencyCode = $user->currency->code;
-    $currencySymbol = $user->currency->symbol;
+    $currencyCode = $user ? $user->currency->code : '';
+    $currencySymbol = $user ? $user->currency->symbol: '';
 @endphp
 
 <!DOCTYPE html>
@@ -20,7 +20,7 @@
         var user = {!! json_encode([
             'currencyCode' => $currencyCode,
             'currencySymbol' => $currencySymbol,
-            'cartItems' => count($user->products),
+            'cartItems' => $user ? count($user->products) : [],
         ]) !!}
     </script>
 
@@ -73,7 +73,7 @@
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     @foreach (App\Currency::get() as $currency)
-                                        <a :class="'dropdown-item ' + ($root.currencyCode == '{{ $currency->code }}' ? 'active' : '')"
+                                        <a href="#" :class="'dropdown-item ' + ($root.currencyCode == '{{ $currency->code }}' ? 'active' : '')"
                                            @click="setCurrency('{{ $currency->code }}')">
                                             {{ $currency->code }}
                                         </a>
@@ -109,7 +109,11 @@
         </nav>
 
         <main class="py-4">
-            <router-view></router-view>
+            @if ($user)
+                <router-view></router-view>
+            @else
+                @yield('content')
+            @endif
         </main>
     </div>
 </body>
