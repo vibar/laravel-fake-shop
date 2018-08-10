@@ -14,7 +14,9 @@
                         @foreach ($orders as $order)
 
                             <p>
-                                <b>#{{ $order->id }}</b> - {{ $order->currency->symbol }} {{ $order->total }} - {{ $order->created_at }}
+                                <b>#{{ $order->id }}</b>
+                                - {{ $order->currency->symbol }} {{ $order->total }}
+                                - {{ $order->created_at }}
                             </p>
 
                         @endforeach

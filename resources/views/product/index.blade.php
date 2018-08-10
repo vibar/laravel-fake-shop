@@ -1,11 +1,14 @@
 @extends('layouts.app')
 
+@php
+    $symbol = auth()->user()->currency->symbol;
+@endphp
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Product List</div>
 
                 <div class="card-body">
 
@@ -21,7 +24,7 @@
 
                                 <p><b>{{ $product->name }}</b></p>
 
-                                <p>{{ auth()->user()->currency->symbol . ' ' . $product->price }}</p>
+                                <p>{{  $symbol . ' ' . $product->price }}</p>
 
                                 <p>{{ $product->description }}</p>
 

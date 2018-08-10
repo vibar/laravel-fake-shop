@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@php
+    $symbol = auth()->user()->currency->symbol;
+@endphp
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -22,7 +26,7 @@
 
                     @if (count($products))
 
-                        <h4 style="float: left;margin-top: 4px;">Total: {{ auth()->user()->currency->symbol }} {{ $total }}</h4>
+                        <h4 style="float: left;margin-top: 4px;">Total: {{ $symbol }} {{ $total }}</h4>
 
                         <form action="{{ route('order.store') }}" method="post"
                               style="float: right;margin-left: 15px;">
@@ -30,7 +34,7 @@
                             <button class="btn btn-primary">{{ __('Checkout') }}</button>
                         </form>
 
-                        <a style="float: right;" href="{{ route('products.index') }}"
+                        <a style="float: right;" href="{{ route('home') }}"
                            class="btn btn-default">{{ __('Keep buying') }}</a>
 
                     @else
@@ -63,7 +67,7 @@
 
                                 <p><b>{{ $product->name }}</b></p>
 
-                                <p>{{ auth()->user()->currency->symbol . ' ' . $product->price }}</p>
+                                <p>{{ $symbol . ' ' . $product->price }}</p>
 
                                 <p>{{ $product->description }}</p>
 
