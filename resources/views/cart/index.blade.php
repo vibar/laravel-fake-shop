@@ -24,16 +24,14 @@
 
                         <h4 style="float: left;margin-top: 4px;">Total: € {{ $total }}</h4>
 
-                        <form action="{{ route('order.store') }}" method="post" style="float: right;margin-left: 15px;">
+                        <form action="{{ route('order.store') }}" method="post"
+                              style="float: right;margin-left: 15px;">
                             {{ csrf_field() }}
                             <button class="btn btn-primary">{{ __('Checkout') }}</button>
                         </form>
 
-                        <form action="{{ route('cart.destroy') }}" method="post" style="float: right;">
-                            {{ csrf_field() }}
-                            {{ method_field('DELETE') }}
-                            <button class="btn btn-default">{{ __('Empty cart') }}</button>
-                        </form>
+                        <a style="float: right;" href="{{ route('products.index') }}"
+                           class="btn btn-default">{{ __('Keep buying') }}</a>
 
                     @else
 

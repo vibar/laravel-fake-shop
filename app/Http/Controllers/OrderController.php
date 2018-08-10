@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Notifications\OrderCreatedNotification;
 use App\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,7 +43,7 @@ class OrderController extends Controller
                 'total' => $total
             ]);
 
-            // TODO: send email
+            $user->notify(new OrderCreatedNotification($order));
 
         });
 

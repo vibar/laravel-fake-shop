@@ -57,11 +57,7 @@ class CartController extends Controller
     {
         $user = $request->user();
 
-        if ($product) { // remove specific product
-            $user->products()->detach($product->id);
-        } else { // remove all
-            $user->products()->detach();
-        }
+        $user->products()->detach($product->id);
 
         return redirect()->route('cart.index');
     }
