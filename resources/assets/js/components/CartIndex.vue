@@ -13,7 +13,7 @@
 
                     <div v-if="products.length" class="card-body cart-summary">
 
-                        <h4 class="total">Total: {{ $root.currency }} {{ total }}</h4>
+                        <h4 class="total">Total: {{ $root.currencySymbol }} {{ total }}</h4>
 
                         <button @click="checkout()" class="btn btn-primary btn-checkout">Checkout</button>
 
@@ -44,7 +44,7 @@
 
                                 <p><b>{{ product.name }}</b></p>
 
-                                <p>{{ $root.currency }} {{ product.price }}</p>
+                                <p>{{ $root.currencySymbol }} {{ product.price }}</p>
 
                                 <p>{{ product.description }}</p>
 
@@ -67,10 +67,6 @@
 <script>
     export default {
 
-        props: [
-            'currency',
-        ],
-
         data() {
 
             return {
@@ -83,6 +79,10 @@
         mounted() {
             let vm = this
             vm.getCart()
+
+            vm.$root.$on('currency.update', () => {
+                vm.getCart()
+            })
         },
 
         methods: {
@@ -100,7 +100,7 @@
                 let vm = this
 
                 axios.delete('/api/carts/' + product.id).then(function(response) {
-                    vm.$root.cartItems = response.data.data.products.length
+                    vm.$root.$emit('cartItems.update', response.data.data.products)
                     vm.getCart()
                 }).catch((error) => {
                     //
@@ -113,6 +113,7 @@
 
                 axios.post('/api/orders').then(function(response) {
                     let order = response.data.data
+                    vm.$root.$emit('cartItems.update', [])
                     vm.$router.push({ name: 'order.view', params: {id: order.id}})
                 }).catch((error) => {
                     //

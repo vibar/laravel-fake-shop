@@ -41,12 +41,49 @@ const router = new VueRouter({
 })
 
 const app = new Vue({
+
+    // TODO: Vuex
+
     router,
+
     el: '#app',
+
     data() {
         return {
-            currency: user.currency,
+            currencyCode: user.currencyCode,
+            currencySymbol: user.currencySymbol,
             cartItems: user.cartItems,
         }
-    }
+    },
+
+    mounted() {
+        let vm = this
+
+        vm.$on('cartItems.update', (products) => {
+            vm.setCartItems(products)
+        })
+
+    },
+
+    methods: {
+
+        setCurrency(currency) {
+            let vm = this
+
+            axios.patch('/api/currencies/' + currency).then(function(response) {
+                vm.currencyCode = response.data.data.code
+                vm.currencySymbol = response.data.data.symbol
+                vm.$emit('currency.update')
+            }).catch((error) => {
+                //
+            })
+        },
+
+        setCartItems(products) {
+            let vm = this
+            vm.cartItems = products.length
+        },
+
+    },
+
 });

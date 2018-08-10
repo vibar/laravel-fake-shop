@@ -22,8 +22,6 @@ Route::group([
     Route::get('/orders', 'HomeController@index')->name('order.index');
     Route::get('/orders/{id}', 'HomeController@index')->name('order.show');
 
-    Route::get('/currency/{currency}', 'CurrencyController@update')->name('currency.update');
-
     Route::group([
         'prefix' => 'api',
         'namespace' => 'API',
@@ -40,6 +38,8 @@ Route::group([
         Route::get('/orders', 'OrderController@index');
         Route::post('/orders', 'OrderController@store');
         Route::get('/orders/{order}', 'OrderController@show');
+
+        Route::patch('/currencies/{currency}', 'CurrencyController@update');
 
     });
 

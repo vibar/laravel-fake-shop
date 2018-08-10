@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Currency;
+use App\Http\Controllers\Controller;
 use App\Services\CurrencyService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,7 +43,7 @@ class CurrencyController extends Controller
 
         });
 
-        return redirect()->back();
+        return response()->json(['data' => $currency]);
     }
 
 }

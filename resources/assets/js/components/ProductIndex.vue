@@ -16,7 +16,7 @@
 
                                 <p><b>{{ product.name }}</b></p>
 
-                                <p>{{ $root.currency }} {{ product.price }}</p>
+                                <p>{{ $root.currencySymbol }} {{ product.price }}</p>
 
                                 <p>{{ product.description }}</p>
 
@@ -36,10 +36,6 @@
 <script>
     export default {
 
-        props: [
-            'currency',
-        ],
-
         data() {
 
             return {
@@ -51,6 +47,11 @@
         mounted() {
             let vm = this
             vm.getProducts()
+
+            vm.$root.$on('currency.update', () => {
+                vm.getProducts()
+            })
+
         },
 
         methods: {
@@ -67,7 +68,7 @@
                 let vm = this
 
                 axios.post('/api/carts/' + product.id).then(function(response) {
-                    vm.$root.cartItems = response.data.data.products.length
+                    vm.$root.$emit('cartItems.update', response.data.data.products)
                     vm.$router.push({ name: 'cart.index'})
                 }).catch((error) => {
                     //

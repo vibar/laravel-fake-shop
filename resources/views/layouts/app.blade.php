@@ -18,7 +18,8 @@
 
     <script>
         var user = {!! json_encode([
-            'currency' => $currencySymbol,
+            'currencyCode' => $currencyCode,
+            'currencySymbol' => $currencySymbol,
             'cartItems' => count($user->products),
         ]) !!}
     </script>
@@ -66,13 +67,14 @@
                                 </router-link>
                             </li>
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ $currencyCode }} <span class="caret"></span>
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    @{{ $root.currencyCode }} <span class="caret"></span>
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     @foreach (App\Currency::get() as $currency)
-                                        <a class="dropdown-item" href="{{ route('currency.update', $currency) }}">
+                                        <a :class="'dropdown-item ' + ($root.currencyCode == '{{ $currency->code }}' ? 'active' : '')"
+                                           @click="setCurrency('{{ $currency->code }}')">
                                             {{ $currency->code }}
                                         </a>
                                     @endforeach
