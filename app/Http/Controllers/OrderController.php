@@ -10,6 +10,18 @@ use Illuminate\Support\Facades\DB;
 class OrderController extends Controller
 {
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $orders = Order::latest()->get();
+
+        return view('order.index', compact('orders'));
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

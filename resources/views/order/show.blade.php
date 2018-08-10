@@ -19,6 +19,10 @@
 
                     <p>An email was sent to: {{ $order->user->email }}.</p>
 
+                    <p>
+                        <a href="{{ route('order.index') }}">See my orders</a>
+                    </p>
+
                 </div>
 
             </div>

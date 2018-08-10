@@ -33,6 +33,7 @@ Route::group([
     Route::delete('/cart/{product}', 'CartController@destroy')->name('cart.destroy');
 
     Route::post('/checkout', 'OrderController@store')->name('order.store');
+    Route::get('/orders', 'OrderController@index')->name('order.index');
 
 });
 
