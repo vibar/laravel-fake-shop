@@ -17,15 +17,31 @@ Route::group([
     'middleware' => 'auth'
 ], function() {
 
-    Route::get('/', 'ProductController@index')->name('home');
-
-    Route::get('/cart', 'CartController@index')->name('cart.index');
-    Route::post('/cart/{product}', 'CartController@store')->name('cart.store');
-    Route::delete('/cart/{product}', 'CartController@destroy')->name('cart.destroy');
+    Route::get('/', 'HomeController@index')->name('home');
+    Route::get('/cart', 'HomeController@index')->name('cart.index');
+    Route::get('/orders', 'HomeController@index')->name('order.index');
+    Route::get('/orders/{id}', 'HomeController@index')->name('order.show');
 
     Route::get('/currency/{currency}', 'CurrencyController@update')->name('currency.update');
-    Route::post('/checkout', 'OrderController@store')->name('order.store');
-    Route::get('/orders', 'OrderController@index')->name('order.index');
+
+    Route::group([
+        'prefix' => 'api',
+        'namespace' => 'API',
+    ], function() {
+
+        // TODO: Move to API routes
+
+        Route::get('/products', 'ProductController@index');
+
+        Route::get('/carts', 'CartController@index');
+        Route::post('/carts/{product}', 'CartController@store');
+        Route::delete('/carts/{product}', 'CartController@destroy');
+
+        Route::get('/orders', 'OrderController@index');
+        Route::post('/orders', 'OrderController@store');
+        Route::get('/orders/{order}', 'OrderController@show');
+
+    });
 
 });
 

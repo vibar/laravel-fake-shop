@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use App\Product;
 use Illuminate\Http\Request;
 
@@ -21,7 +22,10 @@ class CartController extends Controller
 
         $total = $user->getCartTotal();
 
-        return view('cart.index', compact('products', 'total'));
+        return response()->json(['data' => [
+            'total' => $total,
+            'products' => $products,
+        ]]);
     }
 
     /**
@@ -41,7 +45,14 @@ class CartController extends Controller
             ]);
         }
 
-        return redirect()->route('cart.index');
+        $products = $user->products()->get();
+
+        $total = $user->getCartTotal();
+
+        return response()->json(['data' => [
+            'total' => $total,
+            'products' => $products,
+        ]]);
     }
 
     /**
@@ -57,6 +68,13 @@ class CartController extends Controller
 
         $user->products()->detach($product->id);
 
-        return redirect()->route('cart.index');
+        $products = $user->products()->get();
+
+        $total = $user->getCartTotal();
+
+        return response()->json(['data' => [
+            'total' => $total,
+            'products' => $products,
+        ]]);
     }
 }

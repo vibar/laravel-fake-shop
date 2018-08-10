@@ -1,3 +1,9 @@
+@php
+    $user = auth()->user();
+    $currencyCode = $user->currency->code;
+    $currencySymbol = $user->currency->symbol;
+@endphp
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -9,6 +15,13 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
+
+    <script>
+        var user = {!! json_encode([
+            'currency' => $currencySymbol,
+            'cartItems' => count($user->products),
+        ]) !!}
+    </script>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -24,9 +37,9 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <router-link tag="a" class="navbar-brand" :to="{name:'product.index'}">
                     {{ config('app.name', 'Laravel') }}
-                </a>
+                </router-link>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -47,16 +60,14 @@
                             </li>
                         @else
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('cart.index') }}">
-                                    {{ __('My Cart') }}
-                                    @if ($countProducts = auth()->user()->products()->count())
-                                        &nbsp;<span class="badge badge-dark">{{ $countProducts }}</span>
-                                    @endif
-                                </a>
+                                <router-link tag="a" class="nav-link" :to="{name:'cart.index'}">
+                                    My Cart
+                                    &nbsp;<span v-if="$root.cartItems > 0" class="badge badge-dark">@{{ $root.cartItems }}</span>
+                                </router-link>
                             </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ auth()->user()->currency->code }} <span class="caret"></span>
+                                    {{ $currencyCode }} <span class="caret"></span>
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
@@ -69,14 +80,14 @@
                             </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ auth()->user()->name }} <span class="caret"></span>
+                                    {{ $user->name }} <span class="caret"></span>
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 
-                                    <a class="dropdown-item" href="{{ route('order.index') }}">
-                                        {{ __('My Orders') }}
-                                    </a>
+                                    <router-link tag="a" class="dropdown-item" :to="{name:'order.index'}">
+                                        My Orders
+                                    </router-link>
 
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
@@ -96,8 +107,9 @@
         </nav>
 
         <main class="py-4">
-            @yield('content')
+            <router-view></router-view>
         </main>
     </div>
 </body>
+
 </html>

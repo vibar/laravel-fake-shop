@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use App\Product;
 
 class ProductController extends Controller
@@ -15,7 +16,7 @@ class ProductController extends Controller
     {
         $products = Product::all();
 
-        return view('product.index', compact('products'));
+        return response()->json(['data' => $products]);
     }
 
 }

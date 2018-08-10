@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use App\Notifications\OrderCreatedNotification;
 use App\Order;
 use Illuminate\Http\Request;
@@ -16,9 +17,31 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::latest()->get();
+        $orders = Order::with('currency')->latest()->get();
 
-        return view('order.index', compact('orders'));
+        // TODO: Http resources
+
+        return response()->json(['data' => $orders]);
+    }
+
+    /**
+     * Display a specific resource.
+     *
+     * @param Request $request
+     * @param Order $order
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Request $request, Order $order)
+    {
+        if ($order->user->id !== auth()->user()->id) {
+            return response()->json(['message' => 'Not found.'], 404);
+        }
+
+        $order->load(['currency', 'user']);
+
+        // TODO: Http resources
+
+        return response()->json(['data' => $order]);
     }
 
     /**
@@ -32,7 +55,7 @@ class OrderController extends Controller
         $user = $request->user();
 
         if (! $user->products()->count()) {
-            return redirect()->route('home');
+            return response()->json(['message' => 'Cart empty.'], 422);
         }
 
         $order = null;
@@ -57,7 +80,7 @@ class OrderController extends Controller
 
         });
 
-        return view('order.show', compact('order'));
+        return response()->json(['data' => $order]);
 
     }
 
