@@ -56,3 +56,9 @@ Run migrations and seeders (product generation).
 php artisan migrate --seed
 ```
 
+Run application
+
+```
+php artisan serve
+```
+
